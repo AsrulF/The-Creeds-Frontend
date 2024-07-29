@@ -44,7 +44,7 @@ p {
 }
 
 .btn-container .active {
-    background: rgb(100 21 255 / var(--tw-bg-opacity));;
+    background: rgb(79 209 197 / var(--tw-bg-opacity));;
     color: white;
     border-radius: 4px;
   }

@@ -5,10 +5,15 @@ const ProductsContext = React.createContext();
 
 export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState({});
+  const [kategori, setKategori] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const fetchProducts = async () => {
+    setLoading(true)
     try {
       const response = await axios.get(
-        "https://65cc9d71dd519126b83f161f.mockapi.io/api/v1/products"
+        "http://localhost:8000/api/products"
       );
 
       // Memotong array hasil response menjadi 14 data
@@ -18,25 +23,54 @@ export const ProductsProvider = ({ children }) => {
       setProducts(limitedData);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false)
     }
   };
 
   const getProductById = async (id) => {
     try {
-      // Your code
+      const response = await axios.get(
+        `http://localhost:8000/api/products/${id}`
+      );
+
+      setProduct(response.data);
     } catch (err) {
       // Your code
+      console.log(err);
     }
   };
 
+  const fetchCategory = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/categories"
+      )
+
+      setKategori(response.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     fetchProducts();
+    fetchCategory();
   }, []);
+
+  
 
   return (
     <ProductsContext.Provider
       value={{
         products,
+        product,
+        setProduct,
+        getProductById,
+        setKategori,
+        kategori,
+        fetchCategory,
+        loading,
       }}
     >
       {children}

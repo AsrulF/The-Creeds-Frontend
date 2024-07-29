@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useRoutes } from "react-router-dom";
 import axios from "axios";
 
 const AuthContext = createContext();
@@ -29,15 +29,20 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/auth/login`,
-        dataUser
+        `http://localhost:8000/api/auth/customer/sign-in`,
+        JSON.stringify(form),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
       );
 
       const user = response.data;
 
       navigation(redirectPath, { replace: true });
       localStorage.setItem("user", JSON.stringify(user));
-      alert("Login Berhasil, Selamat Datang Admin");
+      alert(`Login Berhasil, Selamat Datang ${user.name}`);
       navigation("/");
       setUser(user);
     } catch (error) {

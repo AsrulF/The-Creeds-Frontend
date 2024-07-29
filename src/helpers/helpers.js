@@ -5,6 +5,14 @@ export const formatPrice = (number) => {
   }).format(number)
 }
 
+export const formatTime = (string) => {
+  return new Intl.DateTimeFormat("en-GB", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit"
+  }).format(string)
+}
+
 export const getUniqueValues = (data, type) => {
   let unique = data.map((item) => item[type])
   if (type === 'colors') {

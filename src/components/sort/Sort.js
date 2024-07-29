@@ -40,13 +40,13 @@ const Sort = () => {
       <p>{filtered_products.length} Product Founds</p>
       <hr />
       <form>
-        <label for="product" className="text-lg">
+        <label for="product" className="text-md mr-2">
           Sort By
         </label>
         <select
           name="product"
           id="product"
-          className="text-lg"
+          className="text-md p-1 rounded-lg"
           onChange={updateSort}
         >
           <option value="price-lowest">Price (Lowest)</option>

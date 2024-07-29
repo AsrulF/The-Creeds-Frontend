@@ -7,7 +7,7 @@ import { SectionHeading as Heading, Subheading as SubheadingBase } from "compone
 import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-7.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-8.svg";
 
-const Subheading = tw(SubheadingBase)`text-center`;
+const Subheading = tw(SubheadingBase)`text-center text-teal-400`;
 const Testimonials = tw.div`flex flex-col lg:flex-row items-center lg:items-stretch`;
 const TestimonialContainer = tw.div`mt-16 lg:w-1/3`;
 const Testimonial = tw.div`px-4 text-center max-w-xs mx-auto flex flex-col items-center`;
@@ -30,8 +30,22 @@ export default ({
       imageSrc:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80",
       quote:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
+        "Best pc !!!, been using my custom pc for work, and it is very satisfying",
       customerName: "Charlotte Hale"
+    },
+    {
+      imageSrc:
+        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      quote:
+        "There is nothing to complaint, the crew understand my request, the aftersale service is very good",
+      customerName: "Benjamin Garcia"
+    },
+    {
+      imageSrc:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      quote:
+        "What a service they have been provide, delivers my custom pc within 5 days after my order, keep up the good work",
+      customerName: "Deborah Mccall"
     }
   ]
 }) => {

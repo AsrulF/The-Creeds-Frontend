@@ -11,6 +11,7 @@ import {
   CLEAR_FILTERS,
 } from "../actions";
 import { useProductsContext } from "./product_context";
+import { data } from "helpers/utils";
 
 const initialState = {
   filtered_products: [],
@@ -33,6 +34,7 @@ const FilterContext = React.createContext();
 
 export const FilterProvider = ({ children }) => {
   const { products } = useProductsContext();
+  // const products = data;
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     dispatch({ type: LOAD_PRODUCTS, payload: products });

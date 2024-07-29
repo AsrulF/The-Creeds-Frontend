@@ -1,7 +1,7 @@
 import React from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
-import illustration from "images/login-illustration.svg";
-import logo from "images/logo.svg";
+import illustration from "images/setup-pc3.avif";
+import logo from "images/AC-logo.png";
 import googleIconImageSrc from "images/google-icon.png";
 import twitterIconImageSrc from "images/twitter-icon.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
@@ -12,7 +12,7 @@ const LoginPage = () => {
 
   const logoLinkUrl = "#";
   const illustrationImageSrc = illustration;
-  const headingText = "Sign In To Treact";
+  const headingText = "Sign In To The Creeds";
   const socialButtons = [
     {
       iconImageSrc: googleIconImageSrc,
@@ -45,11 +45,11 @@ const LoginPage = () => {
 
   return (
     <AnimationRevealPage>
-      <div className="min-h-screen bg-violet-700 text-white font-medium flex justify-center -m-8">
+      <div className="min-h-screen bg-teal-400 text-white font-medium flex justify-center -m-8">
         <div className="max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <a href={logoLinkUrl}>
-              <img src={logo} className="h-12 mx-auto" alt="Logo" />
+              <img src={logo} className="w-[100px] mx-auto" alt="Logo" />
             </a>
             <div className="mt-12 flex flex-col items-center">
               <h1 className="text-2xl xl:text-3xl font-extrabold">
@@ -100,8 +100,8 @@ const LoginPage = () => {
                     type="submit"
                     className="mt-5 tracking-wide font-semibold bg-primary-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   >
-                    <LoginIcon className="icon" />
-                    <span className="text">{submitButtonText}</span>
+                    <span className="text-gray-900">{submitButtonText}</span>
+                    <LoginIcon className="icon text-gray-900" />
                   </button>
                 </form>
                 <p className="mt-6 text-xs text-gray-600 text-center">
@@ -126,7 +126,7 @@ const LoginPage = () => {
           </div>
           <div className="sm:rounded-r-lg flex-1 bg-purple-100 text-center hidden lg:flex justify-center">
             <div
-              className={`m-12 xl:m-16 w-full max-w-sm bg-contain bg-center bg-no-repeat`}
+              className={`w-full bg-cover bg-center bg-no-repeat rounded-r-lg`}
               style={{ backgroundImage: `url("${illustrationImageSrc}")` }}
             ></div>
           </div>

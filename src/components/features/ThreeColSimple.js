@@ -31,7 +31,7 @@ const Card = styled.a`
   }
 
   .title {
-    ${tw`mt-4 font-bold text-xl leading-none`}
+    ${tw`mt-4 font-bold text-xl leading-none text-gray-900`}
   }
 
   .description {
@@ -39,7 +39,7 @@ const Card = styled.a`
   }
 
   .link {
-    ${tw`mt-auto inline-flex items-center pt-5 text-sm font-bold text-primary-300 leading-none hocus:text-primary-900 transition duration-300`}
+    ${tw`mt-auto inline-flex items-center pt-5 text-sm font-bold text-teal-400 leading-none hocus:text-primary-900 transition duration-300`}
     .icon {
       ${tw`ml-2 w-4`}
     }
@@ -61,13 +61,13 @@ export default ({
     {
       imageSrc: SupportIconImage,
       title: "24/7 Support",
-      description: "Lorem ipsum donor amet siti ceali placeholder text",
+      description: "Contact us anytime and anywhere, our staff always ready",
       url: "https://google.com"
     },
     {
       imageSrc: CustomizeIconImage,
       title: "Customizable",
-      description: "Lorem ipsum donor amet siti ceali placeholder text",
+      description: "Whatever you want, WE provide",
       url: "https://reddit.com"
     }
   ],

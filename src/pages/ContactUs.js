@@ -4,7 +4,7 @@ import tw from "twin.macro";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import Header from "components/headers/light.js";
 import Footer from "components/footers/FiveColumnWithInputForm.js";
-import ContactUsForm from "components/forms/TwoColContactUsWithIllustrationFullForm.js";
+import ContactUsForm from "components/forms/SimpleContactUs";
 import ContactDetails from "components/cards/ThreeColContactDetails.js";
 
 const Address = tw.span`leading-relaxed`;
@@ -18,6 +18,7 @@ export default () => {
       <Header />
       <ContactUsForm />
       <ContactDetails
+      description="Find us in these places"
         cards={[
           {
             title: "New York",

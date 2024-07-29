@@ -10,13 +10,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { formatPrice } from "helpers/helpers";
 import { FaStar, FaStarHalf, FaCheck } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useProductsContext } from "context/product_context";
+import { data } from "helpers/utils";
 
 const DetailProduct = () => {
   const { id } = useParams();
   const { addItem, items, updateItemQuantity } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [product, setProduct] = useState({});
+  const { product, setProduct, getProductById, loading } = useProductsContext();
   const [showModal, setShowModal] = useState(false);
   const [mainImageIndex, setMainImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -53,11 +55,63 @@ const DetailProduct = () => {
   const handleAddToCart = () => {
     if (selectedItem && selectedColor) {
       // Lengkapi code berikut
+      const quantityNumber = Number(quantity);
+      const priceNumber = parseFloat(selectedItem.price);
+      const cartItemid = `${selectedItem.id}-${selectedColor}`;
+
+      if (items[cartItemid]) {
+        updateItemQuantity(
+          cartItemid,
+          Number(items[cartItemid].quantity) + quantityNumber
+        );
+      } else {
+        addItem(
+          {
+            ...selectedItem,
+            price: priceNumber,
+            color: selectedColor,
+          },
+          quantityNumber,
+          cartItemid
+        );
+      }
+
+      setQuantity(1);
+      setSelectedColor(null);
+      // Tampilkan pesan bahwa item berhasil ditambahkan ke keranjang
+      toast.success(
+        `Added ${quantityNumber} ${selectedItem.title}(s) to the cart`,
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+
+      // Close the modal after adding to the cart
+      setShowModal(false);
+    } else {
+      // Jika user tidak memilih warna, tampilkan pesan peringatan
+      toast.error("Pilih Warna Terlebih Dahulu!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      setShowModal(false);
     }
   };
 
   useEffect(() => {
     // Your code here
+    getProductById(id);
   }, [id]);
 
   const handleChangePrice = () => {
@@ -73,128 +127,139 @@ const DetailProduct = () => {
     setProduct((prevProduct) => ({ ...prevProduct, updatedPrice }));
   }, [quantity, product.price]);
 
+  console.log("product", product);
+
   return (
     <AnimationRevealPage>
       <Header className={"mb-8"} />
 
       <Container>
-        <Content>
-          <div className="md:flex md:space-x-10 md:mx-auto">
-            <div>
-              <button
-                className="bg-gray-500 p-2 text-white rounded mb-4"
-                onClick={() => navigate(-1)}
-              >
-                Back to products
-              </button>
-              {Array.isArray(product.images) && product.images.length > 0 && (
-                <>
-                  <ProductImage
-                    src={product.images[mainImageIndex].url}
-                    alt={product.name}
-                  />
-                </>
-              )}
-              {Array.isArray(product.images) && product.images.length > 1 && (
-                <div className="grid grid-cols-5 sm:gap-2 mt-4 ">
-                  {product.images.map((image, index) => (
-                    <img
-                      key={index}
-                      src={image.url}
-                      alt={`${product.name} - ${index + 1}`}
-                      className={`h-20 w-20 rounded cursor-pointer ${
-                        index === mainImageIndex
-                          ? "border-2 border-red-500"
-                          : ""
-                      }`}
-                      onClick={() => changeMainImage(index)}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <ProductInfo>
-              <Title>Nama Product </Title>
-              <RatingReviews>
-                <div className="flex items-center justify-center md:justify-normal">
-                  {product.stars}
-                  <span className=" flex mx-2">
-                    {[...Array(5)].map((_, index) => {
-                      const starValue = index + 1;
-                      const isHalfStar =
-                        starValue - 0.5 === Math.floor(product.stars);
-
-                      return (
-                        <span key={index} className="my-auto ">
-                          {starValue <= product.stars ? (
-                            isHalfStar ? (
-                              <FaStarHalf style={{ color: "#fbbf24" }} />
-                            ) : (
-                              <FaStar style={{ color: "#fbbf24" }} />
-                            )
-                          ) : (
-                            <FaStar style={{ color: "#d1d5db" }} />
-                          )}
-                        </span>
-                      );
-                    })}
-                  </span>
-                  | Reviews:
-                </div>
-              </RatingReviews>
-              <Description>Deskripsi</Description>
+        {loading ? (
+          <div>Loading</div>
+        ) : (
+          <Content>
+            <div className="md:flex md:space-x-10 md:mx-auto">
               <div>
-                <p className="mb-2">Available : </p>
-                <p className="mb-2">SKU : </p>
-                <p className="mb-2">Company :</p>
-                <hr className="my-4 h-1 border bg-gray-500" />
-
-                <div className="flex">
-                  <p className="my-auto mr-4">Colors : </p>
-                  {Array.isArray(product.colors) && (
-                    <div className="flex space-x-2">
-                      {product.colors.map((color, index) => (
-                        <div
-                          key={index}
-                          className={`relative w-8 h-8 rounded-full cursor-pointer border-2 ${
-                            selectedColor === color
-                              ? "border-red-500"
-                              : "border-transparent"
-                          }`}
-                          style={{ backgroundColor: color }}
-                          onClick={() => handleColorClick(color)}
-                        >
-                          {selectedColor === color && (
-                            <FaCheck
-                              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white"
-                              size={16}
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <button
+                  className="bg-gray-500 p-2 text-white rounded mb-4"
+                  onClick={() => navigate(-1)}
+                >
+                  Back to products
+                </button>
+                {Array.isArray(product.images) && product.images.length > 0 && (
+                  <>
+                    <ProductImage
+                      src={`http://localhost:8000/uploads/${product?.images[mainImageIndex]}`}
+                      alt={product.title}
+                    />
+                  </>
+                )}
+                {Array.isArray(product.images) && product.images.length > 1 && (
+                  <div className="grid grid-cols-5 sm:gap-2 mt-4 ">
+                    {product.images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={`http://localhost:8000/uploads/${image}`}
+                        alt={`${product.title} - ${index + 1}`}
+                        className={`h-20 w-20 rounded cursor-pointer ${
+                          index === mainImageIndex
+                            ? "border-2 border-red-500"
+                            : ""
+                        }`}
+                        onClick={() => changeMainImage(index)}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
-              <Price>{formatPrice(handleChangePrice())}</Price>
-              <QuantityControl>
-                <QuantityButton
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                >
-                  -
-                </QuantityButton>
-                <QuantityDisplay>{quantity}</QuantityDisplay>
-                <QuantityButton
-                  onClick={() => handleQuantityChange(quantity + 1)}
-                >
-                  +
-                </QuantityButton>
-              </QuantityControl>
-              <AddToCartButton onClick={openModal}>Add to Cart</AddToCartButton>
-            </ProductInfo>
-          </div>
-        </Content>
+
+              <ProductInfo>
+                <Title>{product.title} </Title>
+                <RatingReviews>
+                  <div className="flex items-center justify-center md:justify-normal">
+                    {product.stars}
+                    <span className=" flex mx-2">
+                      {[...Array(5)].map((_, index) => {
+                        const starValue = index + 1;
+                        const isHalfStar =
+                          starValue - 0.5 === Math.floor(product.stars);
+
+                        return (
+                          <span key={index} className="my-auto ">
+                            {starValue <= product.stars ? (
+                              isHalfStar ? (
+                                <FaStarHalf style={{ color: "#fbbf24" }} />
+                              ) : (
+                                <FaStar style={{ color: "#fbbf24" }} />
+                              )
+                            ) : (
+                              <FaStar style={{ color: "#d1d5db" }} />
+                            )}
+                          </span>
+                        );
+                      })}
+                    </span>
+                    | Reviews:
+                  </div>
+                </RatingReviews>
+                <Description>{product.description}</Description>
+                <div>
+                  <p className="mb-2">
+                    Available :{" "}
+                    {product.stock > 0 ? "In Stock" : "Out of Stock"}{" "}
+                  </p>
+                  <p className="mb-2">Stock : {product.stock} </p>
+                  <p className="mb-2">Company : {product.company}</p>
+                  <hr className="my-4 h-1 border bg-gray-500" />
+
+                  <div className="flex">
+                    <p className="my-auto mr-4">Colors : </p>
+                    {Array.isArray(product.colors) && (
+                      <div className="flex space-x-2">
+                        {product.colors.map((color, index) => (
+                          <div
+                            key={index}
+                            className={`relative w-8 h-8 rounded-full cursor-pointer border-2 ${
+                              selectedColor === color
+                                ? "border-red-500"
+                                : "border-transparent"
+                            }`}
+                            style={{ backgroundColor: color }}
+                            onClick={() => handleColorClick(color)}
+                          >
+                            {selectedColor === color && (
+                              <FaCheck
+                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white"
+                                size={16}
+                              />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <Price>{formatPrice(handleChangePrice())}</Price>
+                <QuantityControl>
+                  <QuantityButton
+                    onClick={() => handleQuantityChange(quantity - 1)}
+                  >
+                    -
+                  </QuantityButton>
+                  <QuantityDisplay>{quantity}</QuantityDisplay>
+                  <QuantityButton
+                    onClick={() => handleQuantityChange(quantity + 1)}
+                  >
+                    +
+                  </QuantityButton>
+                </QuantityControl>
+                <AddToCartButton onClick={openModal}>
+                  Add to Cart
+                </AddToCartButton>
+              </ProductInfo>
+            </div>
+          </Content>
+        )}
       </Container>
       {showModal && (
         <>

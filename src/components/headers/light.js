@@ -6,11 +6,12 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import { IoCart } from "react-icons/io5";
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
 
-import logo from "../../images/cek-toko-sebelah.png";
+import logo from "../../images/AC-logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import { useCart } from "react-use-cart";
 import { Link } from "react-router-dom";
+import { useAuth } from "context/AuthProvider.js";
 
 const Header = tw.header`
   flex justify-between items-center
@@ -25,13 +26,13 @@ export const NavLinks = tw.div`flex`;
 export const NavLink = tw.a`
   text-lg my-2 lg:text-sm lg:mx-6 lg:my-auto
   font-semibold tracking-wide transition duration-300
-  pb-1 border-b-2 border-transparent hover:border-primary-500 hocus:text-primary-500
+  pb-1 border-b-2 border-transparent hover:border-teal-700 hocus:text-teal-400
 `;
 
 export const PrimaryLink = tw(NavLink)`
   lg:mx-0
-  px-8 py-3 rounded bg-primary-500 text-gray-100
-  hocus:bg-primary-700 hocus:text-gray-200 focus:shadow-outline
+  px-8 py-3 rounded bg-teal-400 text-gray-100
+  hocus:bg-teal-700 hocus:text-gray-200 focus:shadow-outline
   border-b-0
 `;
 
@@ -39,7 +40,7 @@ export const LogoLink = styled(NavLink)`
   ${tw`flex items-center font-black border-b-0 text-2xl! ml-0!`};
 
   img {
-    ${tw`w-40 mr-3`}
+    ${tw`w-[100px] ml-[150px]`}
   }
 `;
 
@@ -97,6 +98,11 @@ export default ({
   //  2.Buat button logout dan gunakan fungsi logout dari AuthProvider
   /*  3.Tambahkan Ternary Operator untuk link login atau button logout tergantung dari user localstorage */
 
+  const user = localStorage.getItem("user");
+  const { logout } = useAuth();
+
+  // console.log("user", user)
+
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink>
@@ -124,7 +130,13 @@ export default ({
       </NavLink>
 
       <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/#">
-        <Link to={"/login"}>Login</Link>
+        {user ? (
+          <button onClick={() => logout()}>Logout</button>
+        ) : (
+          <NavLink>
+            <Link to={"/login"}>Login</Link>
+          </NavLink>
+        )}
       </PrimaryLink>
     </NavLinks>,
   ];
@@ -135,7 +147,7 @@ export default ({
 
   const defaultLogoLink = (
     <LogoLink href="/">
-      <img src={logo} alt="logo" />
+      <img className="" src={logo} alt="logo" />
     </LogoLink>
   );
 

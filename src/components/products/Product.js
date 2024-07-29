@@ -13,9 +13,13 @@ const Product = ({ image, name, price, id }) => {
           <FaSearch />
         </Link>
       </div>
-      <footer>
-        <h5>{name}</h5>
-        <p>{formatPrice(price)}</p>
+      <footer className="flex-col items-center justify-center">
+        <div className="h-1/2">
+          <h5>{name}</h5>
+        </div>
+        <div className="h-1/2">
+          <p>{formatPrice(price)}</p>
+        </div>
       </footer>
     </Wrapper>
   );
