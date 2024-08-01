@@ -124,7 +124,7 @@ export default ({
         <Link to="/cart">
           <CartContainer>
             <CartIcon />
-            <TotalItems>{totalItems}</TotalItems>
+            <TotalItems>{user ? totalItems : null}</TotalItems>
           </CartContainer>
         </Link>
       </NavLink>
